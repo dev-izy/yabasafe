@@ -1,0 +1,57 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #0a0f1c;
+  --color-surface: #121a2d;
+  --color-surface-2: #1a2440;
+  --color-line: #26324f;
+  --color-ink: #f2f5fb;
+  --color-muted: #a3afc8;
+  --color-brand: #4c8dff;
+  --color-brand-soft: #7fb0ff;
+  --color-brand-ink: #04122b;
+  --color-fire: #d2370f;
+  --color-fire-bright: #ff6b3d;
+  --color-safe: #35d6a4;
+  --color-safe-ink: #05231a;
+  --color-safe-bg: #0e2a26;
+  --color-amber: #ffb020;
+}
+
+@theme inline {
+  --font-sans: var(--font-dm-sans);
+  --font-display: var(--font-syne);
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+}
+
+@layer components {
+  .field {
+    @apply h-12 w-full rounded-xl border border-line bg-surface px-3.5 text-base text-ink placeholder:text-[#8f9cb8] focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-brand;
+  }
+  .label {
+    @apply text-[13px] font-medium text-[#c5cfe3];
+  }
+  .btn {
+    @apply inline-flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-xl px-5 text-base font-bold transition active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60;
+  }
+  .btn-brand {
+    @apply bg-brand text-brand-ink hover:brightness-110;
+  }
+  .btn-safe {
+    @apply bg-safe text-safe-ink hover:brightness-105;
+  }
+  .btn-ghost {
+    @apply border border-[#3a4a70] text-[#c5cfe3] hover:bg-surface;
+  }
+  .card {
+    @apply rounded-[20px] border border-line bg-surface;
+  }
+  .eyebrow {
+    @apply text-xs font-bold tracking-[0.14em] text-muted uppercase;
+  }
+}
