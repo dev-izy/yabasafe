@@ -74,8 +74,10 @@ export async function createAlert(_prev: AdminResult, formData: FormData): Promi
       .eq("id", reportId)
       .in("status", ["new", "acknowledged"]);
     revalidatePath("/admin", "layout");
-    revalidatePath("/app/report");
+       revalidatePath("/app/report");
   }
+
+  await pushNewAlert({ id: created.id, type, area, instructions });
 
   revalidatePath("/admin/monitor");
   redirect("/admin/monitor");
@@ -101,7 +103,8 @@ if (error) return { error: "The All Clear was not sent. Try again." };
 if (cleared) await pushAllClear({ id: cleared.id, area: cleared.area, message: message || null });
 
   
-  await pushNewAlert({ id: created.id, type, area, instructions });
+  if (cleared) await pushAllClear({ id: cleared.id, area: cleared.area, message: message || null });
+
   revalidatePath("/admin/monitor");
   return {};
 }
