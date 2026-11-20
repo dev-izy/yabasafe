@@ -9,6 +9,8 @@ export const metadata: Metadata = {
   title: "YabaSafe Alert",
   description:
     "Real-time emergency alerts for students and guardians of Yaba College of Technology, with clear instructions and muster points.",
+      icons: { icon: "/icons/192", apple: "/icons/180" },
+  appleWebApp: { capable: true, title: "YabaSafe", statusBarStyle: "black-translucent" },
 };
 
 export const viewport: Viewport = { themeColor: "#0A0F1C" };

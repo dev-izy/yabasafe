@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import type { AlertType, AudienceKind } from "@/lib/types";
+import { pushNewAlert, pushAllClear } from "@/lib/push";
 
 export type AdminResult = { error?: string };
 
@@ -89,13 +90,18 @@ export async function clearAlert(_prev: AdminResult, formData: FormData): Promis
   if (!UUID.test(id)) return { error: "That alert is not valid." };
   if (message.length > 300) return { error: "Keep the message under 300 characters." };
 
-  const { error } = await ctx.supabase
-    .from("alerts")
-    .update({ status: "cleared", cleared_at: new Date().toISOString(), clear_message: message || null })
-    .eq("id", id)
-    .eq("status", "active");
-  if (error) return { error: "The All Clear was not sent. Try again." };
+const { data: cleared, error } = await ctx.supabase
+  .from("alerts")
+  .update({ status: "cleared", cleared_at: new Date().toISOString(), clear_message: message || null })
+  .eq("id", id)
+  .eq("status", "active")
+  .select("id, area")
+  .maybeSingle<{ id: string; area: string }>();
+if (error) return { error: "The All Clear was not sent. Try again." };
+if (cleared) await pushAllClear({ id: cleared.id, area: cleared.area, message: message || null });
 
+  
+  await pushNewAlert({ id: created.id, type, area, instructions });
   revalidatePath("/admin/monitor");
   return {};
 }

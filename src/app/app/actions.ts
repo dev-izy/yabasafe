@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { pushStaffReport } from "@/lib/push";
 
 export type ActionResult = { error?: string };
 
@@ -59,7 +60,8 @@ export async function createReport(_prev: ReportResult, formData: FormData): Pro
     }
     return { error: "Your report was not sent. If this is urgent, call 112 now." };
   }
-
+  
+  await pushStaffReport({ type, location });
   revalidatePath("/app/report");
   return { sent: true };
 }

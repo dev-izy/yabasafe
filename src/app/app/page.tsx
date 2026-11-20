@@ -3,10 +3,11 @@ import { requireMember } from "@/lib/auth";
 import { Icon } from "@/components/icons";
 import { AlertBanner } from "@/components/alert-banner";
 import { signOut } from "@/app/actions";
-import { fmtTime, firstName, pointLetter } from "@/lib/format";
+import { fmtTime, firstName } from "@/lib/format";
 import type { Alert, MusterPoint } from "@/lib/types";
 import { SafeButton } from "./safe-button";
 import { LinkRequests } from "./link-requests";
+import { PushToggle } from "@/components/push-toggle";
 
 type LinkRow = {
   id: string;
@@ -106,6 +107,7 @@ export default async function MemberHome() {
           )}
 
           {wardList}
+          <PushToggle />
           {requests.length > 0 && <LinkRequests requests={requests} />}
           {alerts.length > 1 && (
             <p className="text-center text-sm text-muted">{alerts.length - 1} other active alert{alerts.length > 2 ? "s" : ""}. See History.</p>

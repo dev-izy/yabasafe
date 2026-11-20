@@ -4,6 +4,7 @@ import { ALERT_STYLE } from "@/lib/alert-style";
 import { fmtWhen } from "@/lib/format";
 import { REPORT_LABEL, REPORT_TO_ALERT, type IncidentReport, type ReportStatus } from "@/lib/types";
 import { ReportActions } from "../../admin/reports/report-actions";
+import { PushToggle } from "@/components/push-toggle";
 
 export const metadata = { title: "Incoming reports · YabaSafe" };
 
@@ -69,6 +70,7 @@ export default async function ReportsPage() {
           Reports from students and guardians. Nothing is sent to the campus until you create an alert.
         </p>
       </header>
+      <PushToggle label="Get notified of new reports on this device" />
 
       {open.length === 0 && (
         <section className="flex flex-col items-start gap-3 rounded-3xl border border-[#1f6f5c] bg-safe-bg p-6">
