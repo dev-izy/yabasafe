@@ -156,6 +156,8 @@ export default async function MemberHome() {
         </span>
       </Link>
 
+       <PushToggle />
+
       {requests.length > 0 && <LinkRequests requests={requests} />}
       {wardList}
 
