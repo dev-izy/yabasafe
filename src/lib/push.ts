@@ -1,5 +1,5 @@
 import "server-only";
-import webpush from "web-push";
+import { setVapidDetails, sendNotification } from "web-push";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { ALERT_LABEL, ALERT_HEADLINE, type AlertType } from "@/lib/types";
 
@@ -13,7 +13,7 @@ function configure() {
   const priv = process.env.VAPID_PRIVATE_KEY;
   const subject = process.env.VAPID_SUBJECT || "mailto:admin@example.com";
   if (!pub || !priv) return false;
-  webpush.setVapidDetails(subject, pub, priv);
+  setVapidDetails(subject, pub, priv);
   configured = true;
   return true;
 }
@@ -30,7 +30,7 @@ async function deliver(targets: Target[], payload: Payload) {
     await Promise.all(
       targets.slice(i, i + 50).map(async (t) => {
         try {
-          await webpush.sendNotification(
+          await sendNotification(
             { endpoint: t.endpoint, keys: { p256dh: t.p256dh, auth: t.auth_key } },
             body,
             { TTL: 3600, urgency: payload.urgent ? "high" : "normal" },
